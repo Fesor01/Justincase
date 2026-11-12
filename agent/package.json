@@ -1,0 +1,11 @@
+{
+  "name": "justincase-agent",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node --env-file=../.env agent.js"
+  },
+  "dependencies": {
+    "near-api-js": "7.4.0"
+  }
+}
