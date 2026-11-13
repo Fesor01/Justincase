@@ -8,17 +8,22 @@ const GUARDIAN_CHATS = (process.env.GUARDIAN_CHAT_IDS || "")
 const log = (...a) => console.log(new Date().toISOString().slice(11, 19), ...a);
 
 async function tg(chatId, text) {
-  if (TG_TOKEN && chatId) {
+  if (!TG_TOKEN || !chatId) return;
+  for (let attempt = 1; attempt <= 4; attempt++) {
     try {
       const r = await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ chat_id: chatId, text }),
+        signal: AbortSignal.timeout(15000),
       });
-      if (r.ok === false) log("telegram error:", r.status);
+      if (r.ok) return;
+      log("telegram error:", r.status);
+      if (r.status < 500 && r.status !== 429) return;
     } catch (e) {
-      log("telegram failed:", e?.message ?? e);
+      log(`telegram attempt ${attempt} failed:`, e?.cause?.code ?? e?.message ?? e);
     }
+    await new Promise((res) => setTimeout(res, 1500 * attempt));
   }
 }
 
