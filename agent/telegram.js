@@ -1,4 +1,6 @@
 // Telegram notifications: messages only, never touches keys.
+import { buildLetter } from "./letter.js";
+
 const TG_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const OWNER_CHAT = process.env.OWNER_CHAT_ID;
 const GUARDIAN_CHATS = (process.env.GUARDIAN_CHAT_IDS || "")
@@ -31,7 +33,13 @@ export async function onStateChange(prev, next) {
     await toGuardians("JustInCase: enough guardians have confirmed. The cooldown has started. The owner can still cancel by checking in.");
   } else if (next === "Released") {
     await tg(OWNER_CHAT, "JustInCase: the vault has been released.");
-    await toGuardians("JustInCase: the vault has been released to the beneficiaries.");
+    await toGuardians("JustInCase: the vault has been released to the beneficiaries. Here is the handover letter to share with the family:");
+    try {
+      const letter = (await buildLetter()).slice(0, 3800);
+      await toGuardians(letter);
+    } catch (e) {
+      log("letter failed:", e?.message ?? e);
+    }
   } else if (next === "Active") {
     await tg(OWNER_CHAT, "JustInCase: check-in received. Alert cancelled.");
     await toGuardians("JustInCase: the owner checked in. Alert cancelled, no action needed.");

@@ -1,0 +1,8 @@
+{
+  "personal_message": "I love you all. Please look after each other, and do not rush any decisions.",
+  "accounts": [
+    { "name": "Main bank account", "where": "Statements are in the blue folder in the wardrobe", "contact": "Call the branch manager, Mr Adeyemi, on the number in the folder" },
+    { "name": "Life insurance", "where": "Policy papers are in the green envelope", "contact": "The agent's card is stapled to the front" },
+    { "name": "Email and cloud photos", "where": "Account recovery details are with my guardian", "contact": "Ask my guardian for the recovery steps" }
+  ]
+}
