@@ -2,6 +2,7 @@
 // Watches one vault. Can only call two rule-gated methods: raise_alert and release.
 // It cannot check in, confirm, change settings, or withdraw.
 import { Account, JsonRpcProvider, teraToGas } from "near-api-js";
+import { onStateChange } from "./telegram.js";
 
 const RPC = process.env.NEAR_RPC_URL || "https://test.rpc.fastnear.com";
 const VAULT = process.env.VAULT_ACCOUNT;
@@ -52,8 +53,10 @@ async function tick() {
   try {
     const s = await getStatus();
     if (s.state !== lastState) {
+      const prev = lastState;
       log(`state: ${lastState ?? "?"} -> ${s.state}`);
       lastState = s.state;
+      await onStateChange(prev, s.state);
     }
     if (s.state === "Active" && s.overdue) {
       await act("raise_alert");
