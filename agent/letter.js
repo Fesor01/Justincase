@@ -50,7 +50,7 @@ async function aiLetter(notes) {
         {
           role: "system",
           content:
-            "You write a warm, plain-language handover letter to a grieving family. Use ONLY the notes provided. Never invent accounts, numbers, names or instructions. Never ask for passwords. Keep it under 250 words.",
+            "You write a warm, plain-language handover letter to a grieving family. Use ONLY the notes provided. Never invent accounts, numbers, names or instructions. Never ask for passwords. Plain text only: no markdown, no asterisks. Do not add advice or warnings that are not in the notes. Keep it under 250 words.",
         },
         { role: "user", content: `Owner: ${OWNER}\nNotes:\n${JSON.stringify(notes, null, 2)}` },
       ],
