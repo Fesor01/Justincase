@@ -35,6 +35,8 @@ States: `Active -> Alert -> PendingRelease -> Released`. A check-in returns the 
 - Guardians can also raise the alert, so the system still works if the agent's server is down.
 - Worst case if the agent is compromised: a false ALERT. The owner's next check-in cancels it.
 - Failed payouts (for example, a beneficiary account that doesn't exist) are recorded as unpaid and can be retried, so they don't get stuck.
+- The owner can change timers or withdraw only while the vault is Active. Once an alert is raised, neither is possible.
+- Trust model: guardians are trusted. If a threshold of them confirm and the owner stays silent through the cooldown, the funds are released. The owner can cancel at any time before release with a check-in.
 
 ## Try it (do X, see Y)
 
